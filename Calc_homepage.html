@@ -5,7 +5,8 @@
     <link rel="stylesheet" href="style_calculator.css">
     <title>Lab3-Tip Calculator</title>
     </head>
-    <body>
+    <body style="background-image: url(cal.jpeg) ;
+    background-repeat: no-repeat;" >
       <div class="header">
         <h1>TIP CALCULATOR</h1>
         </div>
@@ -16,19 +17,21 @@
 <br>
 <br>
 
-
+    
     <div class="Value">
         
     <h2 style="font-family:monospace">ITMD 541 - LAB 3 - PANKAJ CHOURASIA</h2>
-      <h3>Please enter the amount in Dollars</h3>
+      <h3>Please enter the amount</h3>
 
         <label for="bill_total">Bill Total</label> 
-          <input type="number" id="bill_total" name="bill_total" placeholder="Enter the bill amount">
+          <input id="bill_total" name="bill_total" placeholder="Enter the bill amount">
           <br><br>
         
-        <label for="tip_percent">Tip Percentage </label> 
-          <input type="range" id="tip_percent" name="tax rate" min="0" max="100"> 
-          <br><br>
+          <div class="slidecontainer">
+            <label for="tip">Tip</label> 
+            <input type="range" min="1" max="100" value="50" class="slider" id="tip">
+            <p>Tip Percentage: <span id="demo"></span>%</p>
+          </div>
 
         <label for="tip_amount">Tip Amount </label> 
           <input type="number" id="tip_amount" disabled="">
@@ -46,17 +49,30 @@
     <br>
     
     <br>
-  </div>  
+  </div> 
+     
     <script>
+        var slider = document.getElementById("tip");
+var output = document.getElementById("demo");
+output.innerHTML = slider.value;
+
+slider.oninput = function() {
+  output.innerHTML = this.value;
+}
       var $ = function(id) {
     return document.getElementById(id);
   }
   var calculate_click = function(){
     var billAmt = document.getElementById("bill_total").value;
-    var serviceQual = document.getElementById("tip_percent").value;
+    var serviceQual = document.getElementById("tip").value;
+    var billAmount = String(billAmt);
 
     if (billAmt === "" || serviceQual == 0) {
     alert("Please enter values");
+    return;
+  }
+    if(containsAnyLetters(billAmount)){
+    alert("Please enter numerical value");
     return;
   }
   else{
@@ -76,11 +92,14 @@
 var clears = function(){
         
         document.getElementById("bill_total").value = "";
-        document.getElementById("tip_percent").value = 50;
+        document.getElementById("tip").value = 50;
         document.getElementById("tip_amount").value = "";
         document.getElementById("total").value = "";
     
   }
+  function containsAnyLetters(str) {
+  return /[a-zA-Z]/.test(str);
+}
 
   window.onload = function(){
     $("calculate").addEventListener('click',calculate_click);
